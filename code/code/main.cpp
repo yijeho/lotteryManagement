@@ -14,7 +14,12 @@ using namespace std;
 #define MAX_ARR 6
 
 void showMenu(void);
+void insertPurchasedNum(void);
+void statisticsView(void);
 void lotteryPractice(void);
+void practiceStatistics(void);
+
+
 int getRandomNumber(int nth, int *numAdr);
 bool duplicationProtect(int *numAdr, int place, int cmpNum);
 bool rangeProtect(int num);
@@ -40,16 +45,23 @@ void showMenu(void)
         cout << "1. insert purchased numbers"               << endl;
         cout << "2. statistics view"                        << endl;
         cout << "3. lottery practice"                       << endl;
-        cout << "4. exit"                                   << endl;
+        cout << "4. lottery practice statistics"            << endl;
+        cout << "5. exit"                                   << endl;
         cout << "goTo => ";
         cin  >> getMenu;
         if(getMenu > 0 && getMenu < 5) break;
     }
     switch(getMenu)
     {
+        case 1: insertPurchasedNum();
+            break;
+        case 2: statisticsView();
+            break;
         case 3: lotteryPractice();
             break;
-        case 4: return;
+        case 4: practiceStatistics();
+            break;
+        case 5: return;
             break;
     }
 }
@@ -68,7 +80,7 @@ void lotteryPractice(void)
     {
         lotteryNumbers[i] = getRandomNumber(i, lotteryNumbers);
         cin >> numbers[i];
-        //duplication protection add
+        //du
         if(numbers[i] < 1 || numbers[i] > 50)
         {
             cout << "RANGE ERROR. TRY AGAIN" << endl;
