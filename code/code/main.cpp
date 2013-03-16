@@ -7,15 +7,19 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <iomanip>
+
 using namespace std;
 
 #define MAX_ARR 6
 
 void showMenu(void);
 void lotteryPractice(void);
-int getRandomNumber(void);
+int getRandomNumber(int nth, int *numAdr);
 bool duplicationProtect(int *numAdr, int place, int cmpNum);
+bool rangeProtect(int num);
 void numSort(int *numAdr);
+int cmpNumSets(int *pNum, int *pNum2);
 
 int main()
 {
@@ -62,16 +66,39 @@ void lotteryPractice(void)
     cout << "=> "                              ;
     for(int i=0;i<MAX_ARR;i++)
     {
-        lotteryNumbers[i] = rand()%50 + 1;
+        lotteryNumbers[i] = getRandomNumber(i, lotteryNumbers);
         cin >> numbers[i];
+        //duplication protection add
+        if(numbers[i] < 1 || numbers[i] > 50)
+        {
+            cout << "RANGE ERROR. TRY AGAIN" << endl;
+            cout << "=> ";
+            i=-1;
+        }
     }
     numSort(numbers);
-
+    numSort(lotteryNumbers);
+    cout << "=========================" << endl;
+    cout << "LOTTERY RESULT"            << endl;
+    cout << "=========================" << endl;
+    cout << "YOUR NUMBER : "            << endl;
+    for(int i=0;i<MAX_ARR;i++)
+        cout << numbers[i] << setw(3);
+    cout << endl;
+    cout << "LOTTERY NUMBER : "         << endl;
+    for(int i=0;i<MAX_ARR;i++)
+        cout << lotteryNumbers[i] << setw(3);
+    cout << endl;
+    
+    cout << cmpNumSets(numbers,lotteryNumbers);
 }
 
-int getRandomNumber(void)
+int getRandomNumber(int nth, int *numAdr)
 {
-    return 0;
+    int newNumber = rand()%50 + 1;
+    while(1)
+        if(duplicationProtect(numAdr, nth, newNumber)) break;
+    return newNumber;
 }
 
 bool duplicationProtect(int *numAdr, int place, int cmpNum)
@@ -81,7 +108,6 @@ bool duplicationProtect(int *numAdr, int place, int cmpNum)
             return false;
     return true;
 }
-
 
 void numSort(int *numAdr)
 {
@@ -96,7 +122,13 @@ void numSort(int *numAdr)
             }
 }
 
-
+int cmpNumSets(int *pNum, int *pNum2)
+{
+    int cnt=0;
+    for(int i=0;i<MAX_ARR;i++)
+        if(!duplicationProtect(pNum, MAX_ARR, *(pNum2 + i))) cnt++;
+    return cnt;
+}
 
 
 
